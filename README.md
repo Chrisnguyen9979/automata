@@ -26,3 +26,4 @@ config:
     2 3 #delta(q2, a) = q2, delta(q2, b) = q3
     2 4 #delta(q3, a) = q2, delta(q3, b) = q4
     4 4 #delta(q4, a) = q4, delta(q4, b) = q4
+    

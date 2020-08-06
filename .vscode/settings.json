@@ -8,6 +8,7 @@
         "utility": "cpp",
         "xstring": "cpp",
         "algorithm": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "set": "cpp"
     }
 }

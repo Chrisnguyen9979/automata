@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <set>
+#include <algorithm>
 #include <fstream>
 
 using namespace std;
@@ -11,7 +12,7 @@ class DFA {
     private:
         vector<char> alphabet;
         vector<char> state;
-        set<char> accept;
+        vector<char> accept;
         map<pair<char, char>, char> transmission;
     public:
         DFA() {};
@@ -39,7 +40,7 @@ class DFA {
             cin >> n_accept;
             for (int i = 0; i < n_accept; i++){
                 cin >> temp;
-                accept.insert(temp);
+                accept.push_back(temp);
             }
             for (int i = 0; i < n_state; i++){
                 for (int j = 0; j < n_char; j++){
@@ -67,12 +68,13 @@ class DFA {
             for (auto c : s){
                 start = transmission[{start, c}];
             }
-            if (accept.count(start) == 1){
+            if (find(accept.begin(), accept.end(), start) != accept.end()){
                 return true;
             }
             return false;
         }
 };
+
 int main(){
     DFA dfa;
     dfa.read();
@@ -81,6 +83,7 @@ int main(){
     cin >> tc; getchar();
     while (tc--){
         string a;
+        
         getline(cin, a);
         cout << dfa.include(a) << endl;
     }

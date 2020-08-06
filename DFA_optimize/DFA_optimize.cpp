@@ -15,6 +15,7 @@ class DFA {
             transmission = in_transmission;
         };
         ~DFA() {};
+
         void read(){
             ifstream in("config.txt");
             //Lưu lại đầu vào cũ
@@ -52,8 +53,9 @@ class DFA {
         void print(){
             for (int i = 0; i < state.size(); i++){
                 for (int j = 0; j < alphabet.size(); j++){
-                        cout << state[i] << " " << alphabet[j] << " " << transmission[{state[i], alphabet[j]}] << endl;
+                        cout << transmission[{state[i], alphabet[j]}] << " ";
                 }
+                cout << endl;
             }
             cout << "Accept at ";
             for (auto q : accept){
@@ -71,21 +73,26 @@ class DFA {
             }
             return false;
         }
-        void optimize(){
+        DFA optimize(){
             vector<vector<char>> all = initialize(state, accept);
-            for (auto v : all){
-                for (int i = 0; i < v.size(); i++){
-                    cout << v[i] << "  ";
-                }
-                cout << endl;
-            }
+            
+            int prev_size;
+            int it = 0;
+            do {
+                prev_size = all.size();
+                update(all, transmission, alphabet);
+                it++;
+            } while (it <= 10000 && all.size() != prev_size);
+            normalize(all);
+            return DFA(alphabet, update_state(all), update_accept(all, accept), update_transmission(all, transmission, alphabet));
         } 
 };
 
 int main(){
     DFA dfa;
     dfa.read();
+    DFA optimized_dfa = dfa.optimize();
 
-    dfa.optimize();
+    optimized_dfa.print();
     return 0;
 }

@@ -11,9 +11,9 @@ using namespace std;
 class DFA {
     private:
         vector<char> alphabet;
-        vector<char> state;
-        vector<char> accept;
-        map<pair<char, char>, char> transmission;
+        vector<int> state;
+        vector<int> accept;
+        map<pair<int, char>, int> transmission;
     public:
         DFA() {};
         ~DFA() {};
@@ -24,28 +24,33 @@ class DFA {
             //Chuyển hướng đầu vào từ file config
             cin.rdbuf(in.rdbuf());
             char temp;
+            int temp_int;
+
             int n_char;
             cin >> n_char;
             for (int i = 0; i < n_char; i++){
                 cin >> temp;
                 alphabet.push_back(temp);
             }
+
             int n_state;
             cin >> n_state;
             for (int i = 0; i < n_state; i++){
-                cin >> temp;
-                state.push_back(temp);
+                cin >> temp_int;
+                state.push_back(temp_int);
             }
+
             int n_accept;
             cin >> n_accept;
             for (int i = 0; i < n_accept; i++){
-                cin >> temp;
-                accept.push_back(temp);
+                cin >> temp_int;
+                accept.push_back(temp_int);
             }
+
             for (int i = 0; i < n_state; i++){
                 for (int j = 0; j < n_char; j++){
-                        cin >> temp;
-                        transmission[{state[i], alphabet[j]}] = temp;
+                        cin >> temp_int;
+                        transmission[{state[i], alphabet[j]}] = temp_int;
                 }
             }
             //Chuyển hướng đầu vào lại như ban đầu
@@ -64,7 +69,7 @@ class DFA {
             cout << endl;
         }
         bool include(string s){
-            char start = state[0];
+            int start = state[0];
             for (auto c : s){
                 start = transmission[{start, c}];
             }
@@ -81,6 +86,8 @@ int main(){
 
     int tc = 0;
     cin >> tc; getchar();
+
+    // dfa.print();
     while (tc--){
         string a;
         

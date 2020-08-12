@@ -85,14 +85,34 @@ int main(){
     dfa.read();
 
     int tc = 0;
-    cin >> tc; getchar();
+    
 
+    ifstream in("input.txt");
+    //Lưu lại đầu vào cũ
+    streambuf *cinbuf = std::cin.rdbuf();
+    //input từ input.txt
+    cin.rdbuf(in.rdbuf());
+
+    ofstream out("output.txt");
+    //Lưu lại đầu vào cũ
+    streambuf *coutbuf = std::cout.rdbuf();
+    //output ra output.txt
+    cout.rdbuf(out.rdbuf());
+
+    cin >> tc; 
+
+    char t;
+    cin >> t;
     // dfa.print();
     while (tc--){
         string a;
-        
         getline(cin, a);
         cout << dfa.include(a) << endl;
     }
+
+    //Chuyển hướng đầu vào lại như ban đầu
+    cin.rdbuf(cinbuf);
+    cout.rdbuf(coutbuf);
+
     return 0;
 }

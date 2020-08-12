@@ -55,16 +55,40 @@ class DFA {
             cin.rdbuf(cinbuf);
         }
         void print(){
+            // for (int i = 0; i < state.size(); i++){
+            //     for (int j = 0; j < alphabet.size(); j++){
+            //             cout << state[i] << " " << alphabet[j] << " " << transmission[{state[i], alphabet[j]}] << endl;
+            //     }
+            // }
+            // cout << "Accept at ";
+            // for (auto q : accept){
+            //     cout << q << " ";
+            // }
+            // cout << endl;
+            cout << alphabet.size() << endl;
+            for (int i = 0; i < alphabet.size() - 1; i++){
+                cout << (char)alphabet[i] << " "; 
+            }
+            cout << (char)alphabet[alphabet.size() - 1] << endl; 
+
+            cout << state.size() << endl;
+            for (int i = 0; i < state.size() - 1; i++){
+                cout << state[i] << " "; 
+            }
+            cout << state[state.size() - 1] << endl; 
+
+            cout << accept.size() << endl;
+            for (int i = 0; i < accept.size() - 1; i++){
+                cout << accept[i] << " "; 
+            }
+            cout << accept[accept.size() - 1] << endl; 
+
             for (int i = 0; i < state.size(); i++){
-                for (int j = 0; j < alphabet.size(); j++){
-                        cout << state[i] << " " << alphabet[j] << " " << transmission[{state[i], alphabet[j]}] << endl;
+                for (int j = 0; j < alphabet.size() - 1; j++){
+                        cout << transmission[{state[i], alphabet[j]}] << " ";
                 }
+                cout << transmission[{state[i], alphabet[alphabet.size() - 1]}] << endl;
             }
-            cout << "Accept at ";
-            for (auto q : accept){
-                cout << q << " ";
-            }
-            cout << endl;
         }
         bool include(string s){
             int start = state[0];
@@ -76,7 +100,7 @@ class DFA {
             }
             return false;
         }
-        DFA optimize(bool verbose = false){
+        DFA optimize(){
             vector<vector<int>> all = initialize(state, accept);
             
             int prev_size;
@@ -90,6 +114,7 @@ class DFA {
             
             normalize(all);
 
+            cout << "Cac tap trang thai sau khi toi uu hoa: " << endl;
             for (auto it1 : all){
                 for (auto it2 : it1){
                     cout << it2 << " ";
@@ -105,6 +130,8 @@ int main(){
     dfa.read();
     DFA optimized_dfa = dfa.optimize();
 
+    ofstream out("output.txt");
+    cout.rdbuf(out.rdbuf());
     optimized_dfa.print();
     return 0;
 }

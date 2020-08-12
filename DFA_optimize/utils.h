@@ -9,15 +9,15 @@
 
 using namespace std;
 
-int find_set(char s, vector<vector<char>> all);
-vector<vector<char>> initialize(vector<char> state, vector<char> accept);
-vector<vector<char>> divide(vector<char> state, vector<vector<char>> all, map<pair<char, char>, char> transmission, char c);
-void update(vector<vector<char>> &all, map<pair<char, char>, char> transmission, vector<char> alphabet);
+int find_set(int s, vector<vector<int>> all);
+vector<vector<int>> initialize(vector<int> state, vector<int> accept);
+vector<vector<int>> divide(vector<int> state, vector<vector<int>> all, map<pair<int, char>, int> transmission, char c);
 
-bool is_new(vector<vector<char>> divided);
-void normalize(vector<vector<char>> &all);
+void update(vector<vector<int>> &all, map<pair<int, char>, int> transmission, vector<char> alphabet);
+bool is_new(vector<vector<int>> divided);
+void normalize(vector<vector<int>> &all);
 
-vector<char> update_state(vector<vector<char>> all);
-vector<char> update_accept(vector<vector<char>> all, vector<char> old_accept);
-map<pair<char, char>, char> update_transmission(vector<vector<char>> all, map<pair<char, char>, char> old_transmission, vector<char> alphabet);
+vector<int> update_state(vector<vector<int>> all);
+vector<int> update_accept(vector<vector<int>> all, vector<int> old_accept);
+map<pair<int, char>, int> update_transmission(vector<vector<int>> all, map<pair<int, char>, int> old_transmission, vector<char> alphabet);
 

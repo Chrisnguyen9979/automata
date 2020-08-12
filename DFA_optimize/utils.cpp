@@ -1,6 +1,6 @@
 #include "utils.h"
 
-int find_set(char s, vector<vector<char>> all){
+int find_set(int s, vector<vector<int>> all){
     int res = -1;
     for (int i = 0; i < all.size(); i++){
         if (find(all[i].begin(), all[i].end(), s) != all[i].end()){
@@ -10,8 +10,8 @@ int find_set(char s, vector<vector<char>> all){
     }
     return res;
 }
-vector<vector<char>> initialize(vector<char> state, vector<char> accept){
-    vector<vector<char>> all(2);
+vector<vector<int>> initialize(vector<int> state, vector<int> accept){
+    vector<vector<int>> all(2);
 
     for (auto s : state){
         if (find(accept.begin(), accept.end(), s) == accept.end()){
@@ -23,10 +23,10 @@ vector<vector<char>> initialize(vector<char> state, vector<char> accept){
     }
     return all;
 }
-vector<vector<char>> divide(vector<char> state, vector<vector<char>> all, map<pair<char, char>, char> transmission, char c){
-    vector<vector<char>> res(all.size());
+vector<vector<int>> divide(vector<int> state, vector<vector<int>> all, map<pair<int, char>, int> transmission, char c){
+    vector<vector<int>> res(all.size());
     for (auto s : state){
-        char next_state = transmission[{s, c}];
+        int next_state = transmission[{s, c}];
 
         int idx = find_set(next_state, all);
         res[idx].push_back(s);
@@ -34,8 +34,8 @@ vector<vector<char>> divide(vector<char> state, vector<vector<char>> all, map<pa
     return res;
 }
 
-void update(vector<vector<char>> &all, map<pair<char, char>, char> transmission, vector<char> alphabet){
-    vector<vector<char>> temp;
+void update(vector<vector<int>> &all, map<pair<int, char>, int> transmission, vector<char> alphabet){
+    vector<vector<int>> temp;
 
     for (int i = 0; i < all.size(); i++){
         if (all[i].size() == 1){
@@ -61,22 +61,22 @@ void update(vector<vector<char>> &all, map<pair<char, char>, char> transmission,
         
     }
 }
-void normalize(vector<vector<char>> &all){
+void normalize(vector<vector<int>> &all){
     int start_index = -1;
     for (int i = 0; i < all.size(); i++){
-        if (find(all[i].begin(), all[i].end(), '0') != all[i].end()){
+        if (find(all[i].begin(), all[i].end(), 0) != all[i].end()){
             start_index = i;
             break;
         }
     }
 
-    vector<char> temp(all[start_index].size());
+    vector<int> temp(all[start_index].size());
     copy(all[start_index].begin(), all[start_index].end(), temp.begin());
 
     all.erase(all.begin() + start_index);
     all.insert(all.begin(), temp);
 }
-bool is_new(vector<vector<char>> divided){
+bool is_new(vector<vector<int>> divided){
     int cnt = 0;
     for (auto s : divided){
         if (s.size() > 0){
@@ -86,28 +86,28 @@ bool is_new(vector<vector<char>> divided){
     return cnt > 1;
 }
 
-vector<char> update_state(vector<vector<char>> all){
-    vector<char> state;
+vector<int> update_state(vector<vector<int>> all){
+    vector<int> state;
     for (int i = 0; i < all.size(); i++){
-        state.push_back((char)('0' + i));
+        state.push_back(i);
     }
     return state;
 }
-vector<char> update_accept(vector<vector<char>> all, vector<char> old_accept){
-    vector<char> accept;
+vector<int> update_accept(vector<vector<int>> all, vector<int> old_accept){
+    vector<int> accept;
     for (int i = 0; i < all.size(); i++){
         if (find(old_accept.begin(), old_accept.end(), all[i][0]) != old_accept.end()){
-            accept.push_back((char)('0' + i));
+            accept.push_back(i);
         }
     }
     return accept;
 }
-map<pair<char, char>, char> update_transmission(vector<vector<char>> all, map<pair<char, char>, char> old_transmission, vector<char> alphabet){
-    map<pair<char, char>, char> transmission;
+map<pair<int, char>, int> update_transmission(vector<vector<int>> all, map<pair<int, char>, int> old_transmission, vector<char> alphabet){
+    map<pair<int, char>, int> transmission;
     for (int i = 0; i < all.size(); i++){
         for (auto c : alphabet){
-            char next_state = old_transmission[{all[i][0], c}];
-            transmission[{(char)('0' + i), c}] = (char)('0' + find_set(next_state, all));
+            int next_state = old_transmission[{all[i][0], c}];
+            transmission[{i, c}] = find_set(next_state, all);
         }
     }
     return transmission;
